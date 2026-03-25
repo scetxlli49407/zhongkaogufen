@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>深圳中考估分系统 · 模考定位助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #f2f5f9;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, sans-serif;
+            padding: 20px 16px 40px;
+            color: #1e2a3e;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 20px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 12px;
+            color: #0f172a;
+        }
+
+        .badge {
+            background: #eef2ff;
+            color: #1e40af;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+
+        .input-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .input-item {
+            flex: 1 1 calc(33% - 12px);
+            min-width: 100px;
+        }
+
+        .input-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .input-unit {
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: normal;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            font-size: 1rem;
+            background: #fefefe;
+            transition: 0.2s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+
+        .subject-group {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 12px 12px 4px 12px;
+            margin-bottom: 16px;
+        }
+
+        .group-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .result-total {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            border-radius: 32px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .total-score {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .total-grade {
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .total-note {
+            font-size: 0.7rem;
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+
+        .subject-result {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .subject-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .subject-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #334155;
+        }
+
+        .subject-score {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 6px 0;
+        }
+
+        .subject-grade {
+            font-size: 0.7rem;
+            background: #e2e8f0;
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .strategy-item {
+            background: #fff7ed;
+            border-left: 3px solid #f97316;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 16px;
+            font-size: 0.85rem;
+        }
+
+        hr {
+            margin: 16px 0;
+            border: none;
+            height: 1px;
+            background: #eef2f6;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .inline-contact {
+            background: #f1f5f9;
+            border-radius: 40px;
+            padding: 8px 14px;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部说明 -->
+    <div class="card" style="background: #fefce8; border: 1px solid #fde047;">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <span style="font-size: 2rem;">📊</span>
+            <div><strong>2026深圳中考估分系统</strong><br><span style="font-size: 0.7rem;">基于模考排名换算 | 总分满分610分（不含物化实验）</span></div>
+        </div>
+        <div style="font-size: 0.7rem; margin-top: 12px; color: #4b5563;">
+            ✅ 使用说明：输入适应性考试各科成绩（满分已标注在输入框旁），系统自动计算中考等值分、等级及提分策略。<br>
+            ✅ 数据源自往年等级线+段差模型，免费公益，理性参考。
+        </div>
+    </div>
+
+    <!-- 输入区 -->
+    <div class="card">
+        <div class="card-header">✍️ 模考成绩输入</div>
+        <div class="subject-group">
+            <div class="group-title">📖 主科</div>
+            <div class="input-grid">
+                <div class="input-item"><div class="input-label">语文 <span class="input-unit">(120)</span></div><input type="number" id="chinese" value="120" step="1" min="0" max="120"></div>
+                <div class="input-item"><div class="input-label">数学 <span class="input-unit">(100)</span></div><input type="number" id="math" value="100" step="1" min="0" max="100"></div>
+                <div class="input-item"><div class="input-label">英语 <span class="input-unit">(100)</span></div><input type="number" id="english" value="100" step="1" min="0" max="100"></div>
+            </div>
+        </div>
+        <div class="subject-group">
+            <div class="group-title">⚛️ 理化合卷 (物理70+化学50)</div>
+            <div class="input-grid">
+                <div class="input-item"><div class="input-label">物理 <span class="input-unit">(70)</span></div><input type="number" id="physics" value="70" step="1" min="0" max="70"></div>
+                <div class="input-item"><div class="input-label">化学 <span class="input-unit">(50)</span></div><input type="number" id="chemistry" value="50" step="1" min="0" max="50"></div>
+            </div>
+        </div>
+        <div class="subject-group">
+            <div class="group-title">🏛️ 历道合卷 (历史70+道法50)</div>
+            <div class="input-grid">
+                <div class="input-item"><div class="input-label">历史 <span class="input-unit">(70)</span></div><input type="number" id="history" value="70" step="1" min="0" max="70"></div>
+                <div class="input-item"><div class="input-label">道法 <span class="input-unit">(50)</span></div><input type="number" id="morality" value="50" step="1" min="0" max="50"></div>
+            </div>
+        </div>
+        <div class="input-grid">
+            <div class="input-item"><div class="input-label">体育 <span class="input-unit">(50)</span></div><input type="number" id="pe" value="50" step="1" min="0" max="50"></div>
+        </div>
+        <div style="font-size: 0.7rem; text-align: right; color: #6b7280; margin-top: 6px;">⚠️ 体育默认满分50，可按实修改</div>
+    </div>
+
+    <!-- 核心结果区 -->
+    <div class="result-total" id="totalArea">
+        <div class="total-score" id="totalScore">--</div>
+        <div class="total-grade" id="totalGrade">——</div>
+        <div class="total-note">✨ 预估总分（满分610分，不含物化实验）</div>
+    </div>
+
+    <!-- 单科估分详情 -->
+    <div class="card">
+        <div class="card-header">🎯 中考等值分 & 等级</div>
+        <div class="subject-result" id="subjectResults"></div>
+        <hr>
+        <div class="card-header" style="border-left-color: #f97316;">📈 提分优先级（基于与A线差距）</div>
+        <div id="priorityStrategy" style="font-size: 0.85rem;">—</div>
+        <div id="totalStrategy" class="strategy-item" style="margin-top: 16px;"></div>
+    </div>
+
+    <div class="footer-note">
+        本系统基于排名换算法，结果仅供参考。如需深度学情诊断或志愿咨询<br>
+        可扫码添加助教：<span style="color:#2563eb;">📱 18172894292 (微信)</span>
+    </div>
+</div>
+
+<script>
+    // ---------- 1. 模考等级线（期中考试联考等级线）------------
+    const examGrade = {
+        chinese: { Aplus:101, A:93.5, Bplus:86, B:75, Cplus:54, C:21.5 },
+        math: { Aplus:93, A:84, Bplus:72.5, B:49.5, Cplus:23, C:10 },
+        english: { Aplus:94.1, A:84.1, Bplus:64.1, B:40.2, Cplus:17.6, C:10.9 },
+        physics: { Aplus:64, A:55.5, Bplus:43, B:27, Cplus:11, C:7 },
+        chemistry: { Aplus:48, A:44, Bplus:38, B:25, Cplus:17, C:4.5 },
+        history: { Aplus:67, A:61, Bplus:55, B:46, Cplus:25, C:1.5 },
+        morality: { Aplus:47, A:44, Bplus:41, B:36, Cplus:15, C:1.5 }
+    };
+    // 合卷等级线（物化、历道）
+    const examCombined = {
+        physChem: { Aplus:112, A:99.5, Bplus:81, B:52, Cplus:28, C:11.5 },
+        histMor: { Aplus:114, A:105, Bplus:96, B:82, Cplus:40, C:3 }
+    };
+
+    // ---------- 2. 2025年中考目标等级基准分 (满分含体育，不含实验)--------
+    const targetGrade = {
+        chinese: { Aplus:104, A:97, Bplus:90, B:81, Cplus:61, C:0 },
+        math: { Aplus:95, A:88, Bplus:80, B:63, Cplus:43, C:0 },
+        english: { Aplus:97, A:91, Bplus:77, B:65, Cplus:45, C:0 },
+        physChem: { Aplus:113, A:106, Bplus:95, B:73, Cplus:50, C:0 },
+        histMor: { Aplus:109, A:102, Bplus:93, B:80, Cplus:57, C:0 },
+        pe: 50
+    };
+
+    // ---------- 3. 段差系数表 (修正A+系数，确保满分得到满分) ----------
+    // 原A+系数设为0导致高分低估，现改为动态斜率，保证满分时估分等于满分。
+    // 但为了保留其他等级的逻辑，仍然使用固定系数表，A+等级在计算时单独处理斜率。
+    const segment = {
+        chinese: [
+            { level:"Aplus", minExam:101, targetBase:104, coeff: (120-104)/(120-101) }, // 0.8421
+            { level:"A", minExam:93.5, targetBase:97, coeff:0.8 },
+            { level:"Bplus", minExam:86, targetBase:90, coeff:0.533 },
+            { level:"B", minExam:75, targetBase:81, coeff:0.545 },
+            { level:"Cplus", minExam:54, targetBase:61, coeff:0.524 },
+            { level:"C", minExam:21.5, targetBase:0, coeff:0 }
+        ],
+        math: [
+            { level:"Aplus", minExam:93, targetBase:95, coeff: (100-95)/(100-93) }, // 0.7143
+            { level:"A", minExam:84, targetBase:88, coeff:0.7 },
+            { level:"Bplus", minExam:72.5, targetBase:80, coeff:0.533 },
+            { level:"B", minExam:49.5, targetBase:63, coeff:0.5 },
+            { level:"Cplus", minExam:23, targetBase:43, coeff:0.455 },
+            { level:"C", minExam:10, targetBase:0, coeff:0 }
+        ],
+        english: [
+            { level:"Aplus", minExam:94.1, targetBase:97, coeff: (100-97)/(100-94.1) }, // 0.5085
+            { level:"A", minExam:84.1, targetBase:91, coeff:0.71 },
+            { level:"Bplus", minExam:64.1, targetBase:77, coeff:0.49 },
+            { level:"B", minExam:40.2, targetBase:65, coeff:0.52 },
+            { level:"Cplus", minExam:17.6, targetBase:45, coeff:0.44 },
+            { level:"C", minExam:10.9, targetBase:0, coeff:0 }
+        ],
+        physChem: [
+            { level:"Aplus", minExam:112, targetBase:113, coeff: (120-113)/(120-112) }, // 0.875
+            { level:"A", minExam:99.5, targetBase:106, coeff:0.64 },
+            { level:"Bplus", minExam:81, targetBase:95, coeff:0.486 },
+            { level:"B", minExam:52, targetBase:73, coeff:0.318 },
+            { level:"Cplus", minExam:28, targetBase:50, coeff:0.333 },
+            { level:"C", minExam:11.5, targetBase:0, coeff:0 }
+        ],
+        histMor: [
+            { level:"Aplus", minExam:114, targetBase:109, coeff: (120-109)/(120-114) }, // 1.8333
+            { level:"A", minExam:105, targetBase:102, coeff:0.7 },
+            { level:"Bplus", minExam:96, targetBase:93, coeff:0.444 },
+            { level:"B", minExam:82, targetBase:80, coeff:0.273 },
+            { level:"Cplus", minExam:40, targetBase:57, coeff:0.345 },
+            { level:"C", minExam:3, targetBase:0, coeff:0 }
+        ]
+    };
+
+    function getExamLevel(subject, score) {
+        const lines = examGrade[subject];
+        if (score >= lines.Aplus) return "Aplus";
+        if (score >= lines.A) return "A";
+        if (score >= lines.Bplus) return "Bplus";
+        if (score >= lines.B) return "B";
+        if (score >= lines.Cplus) return "Cplus";
+        return "C";
+    }
+
+    function getCombinedLevel(type, score) {
+        const lines = examCombined[type];
+        if (score >= lines.Aplus) return "Aplus";
+        if (score >= lines.A) return "A";
+        if (score >= lines.Bplus) return "Bplus";
+        if (score >= lines.B) return "B";
+        if (score >= lines.Cplus) return "Cplus";
+        return "C";
+    }
+
+    function calcSingleSubject(subject, rawScore) {
+        if (rawScore === undefined) return 0;
+        let level = getExamLevel(subject, rawScore);
+        let segList = segment[subject];
+        let levelObj = segList.find(s => s.level === level);
+        if (!levelObj) return 0;
+        let estimate = levelObj.targetBase + (rawScore - levelObj.minExam) * levelObj.coeff;
+        // 上限限制
+        if (subject === 'chinese' && estimate > 120) estimate = 120;
+        if ((subject === 'math' || subject === 'english') && estimate > 100) estimate = 100;
+        if (estimate < 0) estimate = 0;
+        return Math.round(estimate * 10) / 10;
+    }
+
+    function calcPhysChem(phy, chem) {
+        let total = phy + chem;
+        let level = getCombinedLevel("physChem", total);
+        let segList = segment.physChem;
+        let levelObj = segList.find(s => s.level === level);
+        if (!levelObj) return 0;
+        let estimate = levelObj.targetBase + (total - levelObj.minExam) * levelObj.coeff;
+        if (estimate > 120) estimate = 120;
+        if (estimate < 0) estimate = 0;
+        return Math.round(estimate * 10) / 10;
+    }
+
+    function calcHistMor(hist, mor) {
+        let total = hist + mor;
+        let level = getCombinedLevel("histMor", total);
+        let segList = segment.histMor;
+        let levelObj = segList.find(s => s.level === level);
+        if (!levelObj) return 0;
+        let estimate = levelObj.targetBase + (total - levelObj.minExam) * levelObj.coeff;
+        if (estimate > 120) estimate = 120;
+        if (estimate < 0) estimate = 0;
+        return Math.round(estimate * 10) / 10;
+    }
+
+    function getTotalGrade(totalScore) {
+        if (totalScore >= 568) return "A+ (前5%)";
+        if (totalScore >= 534) return "A (5%-25%)";
+        if (totalScore >= 489) return "B+ (25%-50%)";
+        if (totalScore >= 400) return "B (50%-75%)";
+        return "C+及以下";
+    }
+
+    function getTotalStrategyText(total) {
+        if (total < 400) return "公办无望，唯有逆天改命，借助外部全日制机构弯道超车，冲击公办，需求对接+V：18172894292";
+        if (total < 470) return "公办边缘，运气反而影响命运，借助寒假营、春季集训冲刺巩固基础，保住公办，需求对接+V：18172894292";
+        if (total < 500) return "熟读政策，充分利用好指标生等中招政策顺利升学，志愿填报非常关键，需求对接+V：18172894292";
+        if (total >= 500) return "择优就读，根据孩子性格特质及学习能力，为孩子匹配最适合的优质高中，敏感点挖掘非常重要，需求联系+V：18172894292";
+        return "多元升学，重点考虑二类自招、优质中职院校或者考虑来年复读再战！";
+    }
+
+    function getPriorityStrategy(subjectEstimates) {
+        const aLines = {
+            chinese: 97, math: 88, english: 91, physChem: 106, histMor: 102
+        };
+        let gaps = [];
+        for (let [key, val] of Object.entries(subjectEstimates)) {
+            if (key === 'pe') continue;
+            let targetA = aLines[key] || 100;
+            let gap = targetA - val;
+            gaps.push({ name: key, gap: gap });
+        }
+        gaps.sort((a,b) => b.gap - a.gap);
+        let advice = "";
+        gaps.forEach((item, idx) => {
+            let subjectName = "";
+            if (item.name === 'chinese') subjectName = "语文";
+            else if (item.name === 'math') subjectName = "数学";
+            else if (item.name === 'english') subjectName = "英语";
+            else if (item.name === 'physChem') subjectName = "物化合卷";
+            else if (item.name === 'histMor') subjectName = "历道合卷";
+            let level = "";
+            if (idx === 0) level = "🔴 核心突破";
+            else if (idx === 1) level = "🟠 重点关注";
+            else if (idx === 2) level = "🟡 战略跟进";
+            else level = "🟢 持续巩固";
+            if (item.gap > 0) advice += `${level}：${subjectName} 距A线差${item.gap.toFixed(1)}分<br>`;
+            else advice += `✅ ${subjectName} 已达A线以上，保持优势<br>`;
+        });
+        return advice || "各科均衡，稳步提升！";
+    }
+
+    function refresh() {
+        let chn = parseFloat(document.getElementById('chinese').value) || 0;
+        let math = parseFloat(document.getElementById('math').value) || 0;
+        let eng = parseFloat(document.getElementById('english').value) || 0;
+        let phy = parseFloat(document.getElementById('physics').value) || 0;
+        let chem = parseFloat(document.getElementById('chemistry').value) || 0;
+        let hist = parseFloat(document.getElementById('history').value) || 0;
+        let mor = parseFloat(document.getElementById('morality').value) || 0;
+        let pe = parseFloat(document.getElementById('pe').value) || 0;
+
+        let estChinese = calcSingleSubject('chinese', chn);
+        let estMath = calcSingleSubject('math', math);
+        let estEnglish = calcSingleSubject('english', eng);
+        let estPhysChem = calcPhysChem(phy, chem);
+        let estHistMor = calcHistMor(hist, mor);
+        let total = estChinese + estMath + estEnglish + estPhysChem + estHistMor + pe;
+        total = Math.round(total * 10) / 10;
+
+        document.getElementById('totalScore').innerText = total.toFixed(0);
+        document.getElementById('totalGrade').innerText = getTotalGrade(total);
+        document.getElementById('totalStrategy').innerHTML = getTotalStrategyText(total);
+
+        const subjectsDetail = [
+            { name: "语文", score: estChinese, grade: getExamLevel('chinese', chn) },
+            { name: "数学", score: estMath, grade: getExamLevel('math', math) },
+            { name: "英语", score: estEnglish, grade: getExamLevel('english', eng) },
+            { name: "物化合卷", score: estPhysChem, grade: getCombinedLevel("physChem", phy+chem) },
+            { name: "历道合卷", score: estHistMor, grade: getCombinedLevel("histMor", hist+mor) },
+            { name: "体育", score: pe, grade: pe>=50?"满分":"—" }
+        ];
+        let html = '';
+        subjectsDetail.forEach(s => {
+            let gradeText = s.grade === "Aplus" ? "A+" : (s.grade === "Bplus" ? "B+" : s.grade?.toUpperCase() || "—");
+            html += `
+                <div class="subject-card">
+                    <div class="subject-name">${s.name}</div>
+                    <div class="subject-score">${typeof s.score === 'number' ? s.score.toFixed(0) : s.score}</div>
+                    <div class="subject-grade">${gradeText}</div>
+                </div>
+            `;
+        });
+        document.getElementById('subjectResults').innerHTML = html;
+
+        let estimateMap = {
+            chinese: estChinese, math: estMath, english: estEnglish,
+            physChem: estPhysChem, histMor: estHistMor, pe: pe
+        };
+        document.getElementById('priorityStrategy').innerHTML = getPriorityStrategy(estimateMap);
+    }
+
+    const inputs = ['chinese','math','english','physics','chemistry','history','morality','pe'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', refresh);
+    });
+    refresh();
+</script>
+</body>
+</html>
